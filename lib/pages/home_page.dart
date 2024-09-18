@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jokiapp/pages/rank_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: const Color.fromRGBO(244, 244, 244, 1),
       backgroundColor: const Color.fromRGBO(244, 244, 244, 1),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -49,7 +51,8 @@ class _HomePageState extends State<HomePage> {
                   children: const [
                     Text(
                       'Welcome!',
-                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
                     ),
                     SizedBox(height: 50),
                   ],
@@ -60,10 +63,9 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       'What do you need today?',
                       style: TextStyle(
-                        fontSize: 25, 
-                        fontWeight: FontWeight.w500,
-                        color: Color.fromRGBO(43, 52, 153, 1)
-                        ),
+                          fontSize: 25,
+                          fontWeight: FontWeight.w500,
+                          color: Color.fromRGBO(43, 52, 153, 1)),
                     ),
                     SizedBox(height: 50),
                   ],
@@ -88,7 +90,8 @@ class _HomePageState extends State<HomePage> {
 
                 // Grid of Services (4 boxes in 2 rows)
                 GridView.builder(
-                  shrinkWrap: true, // Important to allow grid inside SingleChildScrollView
+                  shrinkWrap:
+                      true, // Important to allow grid inside SingleChildScrollView
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: services.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -102,9 +105,16 @@ class _HomePageState extends State<HomePage> {
                     return InkWell(
                       onTap: () {
                         // Handle click event
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Service ${index + 1} clicked')),
-                        );
+                        if (index == 0) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RankPage()));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Coming Soon!')),
+                          );
+                        }
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -114,7 +124,8 @@ class _HomePageState extends State<HomePage> {
                               color: Colors.grey.withOpacity(0.3),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: const Offset(0, 3), // changes position of shadow
+                              offset: const Offset(
+                                  0, 3), // changes position of shadow
                             ),
                           ],
                         ),
@@ -123,7 +134,8 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(15),
                           child: Image.asset(
                             serviceImage,
-                            fit: BoxFit.cover, // Cover the entire box with the image
+                            fit: BoxFit
+                                .cover, // Cover the entire box with the image
                           ),
                         ),
                       ),
