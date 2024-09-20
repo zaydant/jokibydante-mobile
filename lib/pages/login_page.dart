@@ -49,7 +49,20 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // sign user in method
-  void signUserIn(BuildContext context, String name, String uid, String token) {
+  void signUserIn(BuildContext context, String name, String uid, String token, String role) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => AdminHome(
+        name: name,
+        uid: uid,
+        token: token,
+      ),
+    ),
+  );
+}
+  // sign worker in method
+  void signWorkerIn(BuildContext context, String name, String uid, String token, String role) {
   Navigator.push(
     context,
     MaterialPageRoute(
@@ -157,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                             isApiCallProcess = false;
                           });
                           //check token available or not
-                          if (value.token != null && value.token!.isNotEmpty) {
+                          if (value.token != null && value.token!.isNotEmpty && value.role == 'admin') {
                             const snackBar =
                                 SnackBar(content: Text("Login Successful"));
                             ScaffoldMessenger.of(context)
@@ -168,10 +181,26 @@ class _LoginPageState extends State<LoginPage> {
                                 listen: false);
                             // Update the user's data in the provider
                             userProvider.updateUserData(
-                                value.uid!, value.username!, value.token!);
+                                value.uid!, value.username!, value.token!, value.role!);
                             userProvider.saveUserData();
                             signUserIn(
-                                context, value.username!, value.token!, value.uid!);
+                                context, value.username!, value.token!, value.uid!, value.role!);
+                            //if not, return value below
+                          } else if (value.token != null && value.token!.isNotEmpty && value.role == 'worker') {
+                            const snackBar =
+                                SnackBar(content: Text("Login Successful"));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                            // Get the UserProvider instance
+                            final userProvider = Provider.of<UserProvider>(
+                                context,
+                                listen: false);
+                            // Update the user's data in the provider
+                            userProvider.updateUserData(
+                                value.uid!, value.username!, value.token!, value.role!);
+                            userProvider.saveUserData();
+                            signWorkerIn(
+                                context, value.username!, value.token!, value.uid!, value.role!);
                             //if not, return value below
                           } else if (value.error != null) {
                             final snackBar =

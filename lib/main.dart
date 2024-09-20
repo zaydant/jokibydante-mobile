@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jokiapp/models/user_provider.dart';  // Import your UserProvider class
+import 'package:jokiapp/pages/admin/admin_screen.dart';
 import 'package:jokiapp/pages/home_screen.dart';
+import 'package:jokiapp/pages/worker/worker_screen.dart';
 import 'package:provider/provider.dart';  // Import Provider package
 
 void main() {

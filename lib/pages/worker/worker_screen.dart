@@ -1,47 +1,42 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:jokiapp/pages/admin/support_list.dart';
-import 'package:jokiapp/pages/admin/user_list.dart';
-import 'package:jokiapp/pages/admin/withdraw_requests.dart';
 import 'package:jokiapp/pages/profile_page.dart';
 import 'package:jokiapp/pages/transaction_list.dart';
-class AdminScreen extends StatefulWidget {
-  const AdminScreen({super.key});
+import 'package:jokiapp/pages/worker/job_list.dart';
+import 'package:jokiapp/pages/worker/withdraw_request.dart';
+
+class WorkerScreen extends StatefulWidget {
+  const WorkerScreen({super.key});
 
   @override
-  State<AdminScreen> createState() => _AdminScreenState();
+  State<WorkerScreen> createState() => _WorkerScreenState();
 }
 
-class _AdminScreenState extends State<AdminScreen> {
+class _WorkerScreenState extends State<WorkerScreen> {
 
   final navigationKey = GlobalKey<CurvedNavigationBarState>();
-  int index = 2;
+  int index = 1;
 
   @override
   Widget build(BuildContext context) {
     final screens = [
+      JobList(),
       TransactionList(),
-      WithdrawRequests(),
-      UserList(),
-      SupportList(),
+      RequestWithdraw(),
       ProfilePage(),
     ];
 
     final items = <Widget>[
+      const Icon(
+        Icons.cases_rounded,
+        color: Colors.white,
+      ),
       const Icon(
         Icons.article,
         color: Colors.white,
       ),
       const Icon(
         Icons.monetization_on,
-        color: Colors.white,
-      ),
-      const Icon(
-        Icons.person,
-        color: Colors.white,
-      ),
-      const Icon(
-        Icons.support_agent,
         color: Colors.white,
       ),
       const Icon(
