@@ -102,7 +102,7 @@ class _RankPageState extends State<RankPage> {
                             });
                           },
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 20),
 
                         // PaymentBox for E-Wallet
                         PaymentBox(
