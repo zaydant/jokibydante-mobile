@@ -18,11 +18,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   //text editing controller
   final emailController = TextEditingController();
-
   final nameController = TextEditingController();
-
   final passwordController = TextEditingController();
-
   final vpasswordController = TextEditingController();
 
   //Login model
@@ -31,14 +28,13 @@ class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   bool isApiCallProcess = false;
 
-
   @override
   void initState() {
     super.initState();
     requestModel = LoginRequestModel();
   }
 
-   //Create build loading hud
+  //Create build loading hud
   @override
   Widget build(BuildContext context) {
     return ProgressHUD(
@@ -49,32 +45,34 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // sign user in method
-  void signUserIn(BuildContext context, String name, String uid, String token, String role) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => AdminHome(
-        name: name,
-        uid: uid,
-        token: token,
+  void signUserIn(BuildContext context, String name, String uid, String token,
+      String role) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminHome(
+          name: name,
+          uid: uid,
+          token: token,
+        ),
       ),
-    ),
-  );
-}
-  // sign worker in method
-  void signWorkerIn(BuildContext context, String name, String uid, String token, String role) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => AdminHome(
-        name: name,
-        uid: uid,
-        token: token,
-      ),
-    ),
-  );
-}
+    );
+  }
 
+  // sign worker in method
+  void signWorkerIn(BuildContext context, String name, String uid, String token,
+      String role) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminHome(
+          name: name,
+          uid: uid,
+          token: token,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget _uiSetup(BuildContext context) {
@@ -92,7 +90,9 @@ class _LoginPageState extends State<LoginPage> {
                 width: 180,
               ),
 
-              const SizedBox(height: 25,),
+              const SizedBox(
+                height: 25,
+              ),
 
               const Text(
                 'Welcome!',
@@ -170,7 +170,9 @@ class _LoginPageState extends State<LoginPage> {
                             isApiCallProcess = false;
                           });
                           //check token available or not
-                          if (value.token != null && value.token!.isNotEmpty && value.role == 'admin') {
+                          if (value.token != null &&
+                              value.token!.isNotEmpty &&
+                              value.role == 'admin') {
                             const snackBar =
                                 SnackBar(content: Text("Login Successful"));
                             ScaffoldMessenger.of(context)
@@ -180,13 +182,15 @@ class _LoginPageState extends State<LoginPage> {
                                 context,
                                 listen: false);
                             // Update the user's data in the provider
-                            userProvider.updateUserData(
-                                value.uid!, value.username!, value.token!, value.role!);
+                            userProvider.updateUserData(value.uid!,
+                                value.username!, value.token!, value.role!);
                             userProvider.saveUserData();
-                            signUserIn(
-                                context, value.username!, value.token!, value.uid!, value.role!);
+                            signUserIn(context, value.username!, value.token!,
+                                value.uid!, value.role!);
                             //if not, return value below
-                          } else if (value.token != null && value.token!.isNotEmpty && value.role == 'worker') {
+                          } else if (value.token != null &&
+                              value.token!.isNotEmpty &&
+                              value.role == 'worker') {
                             const snackBar =
                                 SnackBar(content: Text("Login Successful"));
                             ScaffoldMessenger.of(context)
@@ -196,11 +200,11 @@ class _LoginPageState extends State<LoginPage> {
                                 context,
                                 listen: false);
                             // Update the user's data in the provider
-                            userProvider.updateUserData(
-                                value.uid!, value.username!, value.token!, value.role!);
+                            userProvider.updateUserData(value.uid!,
+                                value.username!, value.token!, value.role!);
                             userProvider.saveUserData();
-                            signWorkerIn(
-                                context, value.username!, value.token!, value.uid!, value.role!);
+                            signWorkerIn(context, value.username!, value.token!,
+                                value.uid!, value.role!);
                             //if not, return value below
                           } else if (value.error != null) {
                             final snackBar =
@@ -237,7 +241,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-bool validateAndSave() {
+  bool validateAndSave() {
     final form = globalFormKey.currentState;
     if (form != null && form.validate()) {
       form.save();
