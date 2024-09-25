@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        automaticallyImplyLeading: false,
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 20),
