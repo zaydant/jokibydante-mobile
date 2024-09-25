@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:jokiapp/models/user_provider.dart';
 import 'package:jokiapp/pages/admin/support_list.dart';
 import 'package:jokiapp/pages/admin/user_list.dart';
 import 'package:jokiapp/pages/admin/withdraw_requests.dart';
@@ -13,6 +14,16 @@ class AdminScreen extends StatefulWidget {
 }
 
 class _AdminScreenState extends State<AdminScreen> {
+
+  // void fetchUserName() {
+    
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    print(UserProvider().role);
+  }
 
   final navigationKey = GlobalKey<CurvedNavigationBarState>();
   int index = 2;

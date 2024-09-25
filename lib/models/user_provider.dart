@@ -22,13 +22,13 @@ class UserProvider extends ChangeNotifier {
   void saveUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('uid', _uid!);
-    prefs.setString('name', _username!);
+    prefs.setString('username', _username!);
     prefs.setString('token', _token!);
         prefs.setString('role', _role!);
   }
 
   // Methods to update user's data
-  void updateUserData(String uid, String name, String token, String role) {
+  void updateUserData(String uid, String username, String token, String role) {
     _uid = uid;
     _username = username;
     _token = token;

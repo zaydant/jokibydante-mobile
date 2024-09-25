@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:jokiapp/models/loginModel.dart';
 import 'package:jokiapp/models/user_provider.dart';
 import 'package:jokiapp/pages/admin/admin_home.dart';
+import 'package:jokiapp/pages/admin/admin_screen.dart';
+import 'package:jokiapp/pages/worker/worker_screen.dart';
 import 'package:jokiapp/services/auth_services.dart';
 import 'package:provider/provider.dart';
 
@@ -50,11 +52,7 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AdminHome(
-          name: name,
-          uid: uid,
-          token: token,
-        ),
+        builder: (context) => AdminScreen(),
       ),
     );
   }
@@ -65,10 +63,7 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AdminHome(
-          name: name,
-          uid: uid,
-          token: token,
+        builder: (context) => WorkerScreen(
         ),
       ),
     );
@@ -164,8 +159,8 @@ class _LoginPageState extends State<LoginPage> {
                           isApiCallProcess = true;
                         });
                         //handle API process
-                        AuthService remoteService = AuthService();
-                        remoteService.login(requestModel).then((value) {
+                        AuthService authService = AuthService();
+                        authService.login(requestModel).then((value) {
                           setState(() {
                             isApiCallProcess = false;
                           });
@@ -185,6 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                             userProvider.updateUserData(value.uid!,
                                 value.username!, value.token!, value.role!);
                             userProvider.saveUserData();
+                            // print(value.username!);
                             signUserIn(context, value.username!, value.token!,
                                 value.uid!, value.role!);
                             //if not, return value below
