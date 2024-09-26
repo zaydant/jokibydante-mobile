@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jokiapp/components/details_dialog.dart';
+import 'package:jokiapp/components/transaction_row.dart';
 import 'package:jokiapp/models/transaction_model.dart';
 import 'package:jokiapp/models/user_provider.dart';
 import 'package:jokiapp/services/transaction_services.dart';
@@ -89,6 +90,7 @@ class _JobListState extends State<JobList> {
                   ],
                 ),
               ),
+              const SizedBox(height: 20),
               FutureBuilder<List<TransactionData>>(
                 future: _futureTransactions,
                 builder: (context, snapshot) {
@@ -101,35 +103,20 @@ class _JobListState extends State<JobList> {
                   } else {
                     final filteredTransactions = snapshot.data!;
 
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columns: const [
-                          DataColumn(label: Text('Rank')),
-                          DataColumn(label: Text('Pay')),
-                          DataColumn(label: Text('Req Hero')),
-                          DataColumn(label: Text('Action')),
-                        ],
-                        rows: filteredTransactions.map((transaction) {
-                          return DataRow(cells: [
-                            DataCell(Text('${transaction.rank} x ${transaction.quantity}')),
-                            DataCell(Text(transaction.price)),
-                            DataCell(Text(transaction.reqHero)),
-                            DataCell(
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.white,
-                                  backgroundColor: const Color.fromRGBO(43, 52, 153, 1),
-                                ),
-                                onPressed: () {
-                                  _showTransactionDetailsDialog(transaction);
-                                },
-                                child: const Text('CHECK'),
-                              ),
-                            ),
-                          ]);
-                        }).toList(),
-                      ),
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: filteredTransactions.length,
+                      itemBuilder: (context, index) {
+                        final transaction = filteredTransactions[index];
+
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                          child: TransactionRow(
+                            transaction: transaction,
+                            onCheck: () => _showTransactionDetailsDialog(transaction),
+                          ),
+                        );
+                      },
                     );
                   }
                 },
