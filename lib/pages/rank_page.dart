@@ -5,7 +5,9 @@ import 'package:jokiapp/components/my_textfield.dart';
 import 'package:jokiapp/components/payment_box.dart';
 import 'package:jokiapp/components/quantity_box.dart';
 import 'package:jokiapp/components/service_box.dart';
+import 'package:jokiapp/models/transaction_model.dart';
 import 'package:jokiapp/pages/payment_page.dart';
+import 'package:jokiapp/services/transaction_services.dart';
 // Assuming this is your theme file
 
 class RankPage extends StatefulWidget {
@@ -18,6 +20,7 @@ class RankPage extends StatefulWidget {
 class _RankPageState extends State<RankPage> {
   bool _dialogShown = false; // Boolean flag to track if dialog is shown
   String? selectedLogin;
+  final TransactionService _transactionService = TransactionService();
 
   //text editing controller
   final emailController = TextEditingController();
@@ -30,13 +33,11 @@ class _RankPageState extends State<RankPage> {
   void _showBottomSheet(
       BuildContext context, String title, double currentPrice) {
     int _quantity = 3; // Move the quantity state inside the bottom sheet
-    // String selectedPaymentMethod = 'Bank Transfer'; // Initial payment method
-    String _selectedMethod =
-        'Bank Transfer'; // State for selected payment method
+    String _selectedMethod = 'Bank Transfer';
 
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // Make the bottom sheet scrollable
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setBottomSheetState) {
@@ -44,8 +45,7 @@ class _RankPageState extends State<RankPage> {
               expand: false,
               builder: (context, scrollController) {
                 return SingleChildScrollView(
-                  controller:
-                      scrollController, // Allows the bottom sheet to be scrollable
+                  controller: scrollController,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
@@ -69,8 +69,7 @@ class _RankPageState extends State<RankPage> {
                               initialValue: _quantity,
                               onQuantityChanged: (newQuantity) {
                                 setBottomSheetState(() {
-                                  _quantity =
-                                      newQuantity; // Update quantity within the bottom sheet
+                                  _quantity = newQuantity;
                                 });
                               },
                             ),
@@ -79,8 +78,8 @@ class _RankPageState extends State<RankPage> {
                         const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Text(
+                          children: const [
+                            Text(
                               'Payment Methods',
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
@@ -106,10 +105,10 @@ class _RankPageState extends State<RankPage> {
 
                         // PaymentBox for E-Wallet
                         PaymentBox(
-                          method: 'E-Wallet',
+                          method: 'E Wallet',
                           price:
                               'Rp ${(currentPrice * _quantity).toStringAsFixed(0)}',
-                          assetImagePath: 'assets/images/bca.png',
+                          assetImagePath: 'assets/images/gopay.png',
                           isSelected: _selectedMethod == 'E-Wallet',
                           onTap: () {
                             setBottomSheetState(() {
@@ -120,15 +119,13 @@ class _RankPageState extends State<RankPage> {
                         const SizedBox(height: 20),
 
                         MyButton(
-                          onTap: () {
-                            // Check if any of the required fields are empty
+                          onTap: () async {
                             if (emailController.text.isEmpty ||
                                 passwordController.text.isEmpty ||
                                 heroController.text.isEmpty ||
                                 notesController.text.isEmpty ||
                                 contactController.text.isEmpty ||
                                 selectedLogin == null) {
-                              // Show snackbar if any required field is empty
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
@@ -138,25 +135,63 @@ class _RankPageState extends State<RankPage> {
                               );
                               Navigator.of(context).pop();
                             } else {
-                              // Proceed to the payment page if all fields are filled
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PaymentPage(
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                    loginMethod: selectedLogin,
-                                    hero: heroController.text,
-                                    notes: notesController.text,
-                                    contact: contactController.text,
-                                    serviceTitle: title,
-                                    quantity: _quantity,
-                                    totalPrice: currentPrice * _quantity,
-                                    paymentMethod:
-                                        _selectedMethod, // Pass selected payment method
-                                  ),
-                                ),
+                              // Create a new transaction model
+                              TransactionModel newTransaction =
+                                  TransactionModel(
+                                email: emailController.text,
+                                password: passwordController.text,
+                                loginMethod: selectedLogin!,
+                                reqHero: heroController.text,
+                                notes: notesController.text,
+                                contactNumber: contactController.text,
+                                rank: title, // From the selected rank
+                                price: currentPrice * _quantity,
+                                quantity: _quantity,
+                                paymentMethod: _selectedMethod,
+                                paymentStatus: false,
+                                jokiStatus: 'actionNeeded',
                               );
+
+                              // Call the service
+                              TransactionService transactionService =
+                                  TransactionService();
+                              TransactionModel? createdTransaction =
+                                  await transactionService
+                                      .createTransaction(newTransaction);
+
+                              if (createdTransaction != null) {
+                                // Navigate to PaymentPage or show confirmation with the response data
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PaymentPage(
+                                      email: createdTransaction.email,
+                                      password: createdTransaction.password,
+                                      loginMethod:
+                                          createdTransaction.loginMethod,
+                                      hero: createdTransaction.reqHero,
+                                      notes: createdTransaction.notes,
+                                      contact: createdTransaction.contactNumber,
+                                      serviceTitle: createdTransaction.rank,
+                                      quantity: createdTransaction.quantity,
+                                      totalPrice: createdTransaction.price,
+                                      paymentMethod:
+                                          createdTransaction.paymentMethod,
+                                      transactionId:
+                                          createdTransaction.transactionId ?? '',
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                // Show an error message if transaction creation fails
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                        Text('Failed to create transaction'),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              }
                             }
                           },
                           buttonText: 'Order Now',
@@ -306,7 +341,7 @@ class _RankPageState extends State<RankPage> {
                     MyTextField(
                       controller: passwordController,
                       hintText: 'Password',
-                      obscureText: true, // Password field should be obscure
+                      obscureText: false, // Password field should be obscure
                       prefixIcon: Icons.lock,
                     ),
                     const SizedBox(height: 20),

@@ -77,3 +77,78 @@ class TransactionData{
       );
   }
 }
+
+class TransactionModel {
+  final String email;
+  final String password;
+  final String loginMethod;
+  final String reqHero;
+  final String notes;
+  final String contactNumber;
+  final String rank;
+  final double price;
+  final int quantity;
+  final String paymentMethod;
+  final bool paymentStatus;
+  final String jokiStatus;
+  final String? transactionId; // Nullable field for transaction ID
+  final String? createdAt; // Nullable field for creation time
+  final String? updatedAt; // Nullable field for update time
+
+  TransactionModel({
+    required this.email,
+    required this.password,
+    required this.loginMethod,
+    required this.reqHero,
+    required this.notes,
+    required this.contactNumber,
+    required this.rank,
+    required this.price,
+    required this.quantity,
+    required this.paymentMethod,
+    required this.paymentStatus,
+    required this.jokiStatus,
+    this.transactionId, // Optional field for the transaction ID
+    this.createdAt, // Optional field for creation time
+    this.updatedAt, // Optional field for update time
+  });
+
+  // Convert object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'email': email,
+      'password': password,
+      'loginMethod': loginMethod,
+      'reqHero': reqHero,
+      'notes': notes,
+      'contactNumber': contactNumber,
+      'rank': rank,
+      'price': price,
+      'quantity': quantity,
+      'paymentMethod': paymentMethod,
+      'paymentStatus': paymentStatus,
+      'jokiStatus': jokiStatus,
+    };
+  }
+
+  // Convert JSON response to object
+  factory TransactionModel.fromJson(Map<String, dynamic> json) {
+    return TransactionModel(
+      email: json['email'],
+      password: json['password'],
+      loginMethod: json['loginMethod'],
+      reqHero: json['reqHero'],
+      notes: json['notes'],
+      contactNumber: json['contactNumber'],
+      rank: json['rank'],
+      price: double.parse(json['price']),
+      quantity: json['quantity'],
+      paymentMethod: json['paymentMethod'],
+      paymentStatus: json['paymentStatus'],
+      jokiStatus: json['jokiStatus'],
+      transactionId: json['transactionId'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+    );
+  }
+}

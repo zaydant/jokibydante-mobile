@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 List<String> items = [
-  'Moonton (Recommended)',
+  'Moonton',
   'Facebook',
   'VK',
   'Tiktok',
@@ -49,7 +49,7 @@ class _LoginCategoriesState extends State<LoginCategories> {
                     value: item,
                     child: Text(
                       item,
-                      style: const TextStyle(fontSize: 24, fontFamily: 'JosefinSans',),
+                      style: const TextStyle(fontSize: 16, fontFamily: 'JosefinSans', fontWeight: FontWeight.bold),
                     ),
                   ))
               .toList(),
