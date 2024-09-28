@@ -84,8 +84,8 @@ class TransactionService {
 }
 
   Future<void> updateTransaction(
-      String token, String transactionId, String jokiStatus, String action) async {
-    final uri = Uri.parse('$url/joki//jokiStatus/$transactionId?action=$action');
+      String token, String transactionId, String jokiStatus) async {
+    final uri = Uri.parse('$url/joki//jokiStatus/$transactionId?action=update');
 
     try {
       final response = await http.put(
@@ -111,6 +111,30 @@ class TransactionService {
       print(uri);
       print('Error take job: $e');
       throw Exception('Error take job: $e');
+    }
+  }
+
+  Future<void> finishTransaction(String token, String transactionId, File imageFile) async {
+
+    final uri = Uri.parse('$url/joki//jokiStatus/$transactionId?action=finish');
+
+    try {
+      var request = http.MultipartRequest('PUT', uri);
+      request.headers['Authorization'] = 'Bearer $token';
+      
+      request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body)['data'];
+        print(responseData);
+      } else {
+        print('Failed to finish transaction: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error finishing transaction: $e');
     }
   }
 }

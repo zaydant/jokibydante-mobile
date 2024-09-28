@@ -33,7 +33,7 @@ class _TransactionListState extends State<TransactionList> {
 
   Future<void> _updateTransaction(String token, String transactionId, String jokiStatus) async {
     try {
-      await _transactionService.updateTransaction(token, transactionId, jokiStatus, "update");
+      await _transactionService.updateTransaction(token, transactionId, jokiStatus);
       scaffoldMessengerKey.currentState?.showSnackBar(
         const SnackBar(content: Text('Job taken successfully')),
       );
@@ -185,7 +185,7 @@ Widget build(BuildContext context) {
                 Navigator.of(context).pop(); // Close the dialog
                 try {
                   await _transactionService.updateTransaction(
-                      token, transactionId, jokiStatus, action);
+                      token, transactionId, jokiStatus);
                 } catch (e) {
                   scaffoldMessengerKey.currentState?.showSnackBar(
                     SnackBar(content: Text('Error: $e')),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:jokiapp/components/details_dialog.dart';
 import 'package:jokiapp/components/transaction_row.dart';
 import 'package:jokiapp/models/transaction_model.dart';
@@ -37,7 +38,7 @@ class _JobListState extends State<JobList> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return TransactionDetailsDialog(transaction: transaction);
+        return TransactionDetailsDialog(transaction: transaction, onFinishTransaction: _refreshTransactions,);
       },
     );
   }
@@ -64,8 +65,7 @@ class _JobListState extends State<JobList> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: SafeArea(
+      body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -91,40 +91,41 @@ class _JobListState extends State<JobList> {
                 ),
               ),
               const SizedBox(height: 20),
-              FutureBuilder<List<TransactionData>>(
-                future: _futureTransactions,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No transactions found.'));
-                  } else {
-                    final filteredTransactions = snapshot.data!;
-
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: filteredTransactions.length,
-                      itemBuilder: (context, index) {
-                        final transaction = filteredTransactions[index];
-
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-                          child: TransactionRow(
-                            transaction: transaction,
-                            onCheck: () => _showTransactionDetailsDialog(transaction),
-                          ),
-                        );
-                      },
-                    );
-                  }
-                },
+              Expanded(
+                child: FutureBuilder<List<TransactionData>>(
+                  future: _futureTransactions,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('No transactions found.'));
+                    } else {
+                      final filteredTransactions = snapshot.data!;
+                
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: filteredTransactions.length,
+                        itemBuilder: (context, index) {
+                          final transaction = filteredTransactions[index];
+                
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                            child: TransactionRow(
+                              transaction: transaction,
+                              onCheck: () => _showTransactionDetailsDialog(transaction),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
               ),
             ],
           ),
         ),
-      ),
     );
   }
 }
