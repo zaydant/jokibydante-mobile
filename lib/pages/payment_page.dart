@@ -93,7 +93,7 @@ class _PaymentPageState extends State<PaymentPage> {
       backgroundColor: const Color.fromRGBO(244, 244, 244, 1),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Payment Confirmation'),
+        title: const Text('Your Invoice'),
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),

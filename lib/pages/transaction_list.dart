@@ -31,9 +31,9 @@ class _TransactionListState extends State<TransactionList> {
     });
   }
 
-  Future<void> _takeJob(String token, String transactionId, String jokiStatus) async {
+  Future<void> _updateTransaction(String token, String transactionId, String jokiStatus) async {
     try {
-      await _transactionService.takeJob(token, transactionId, jokiStatus);
+      await _transactionService.updateTransaction(token, transactionId, jokiStatus, "update");
       scaffoldMessengerKey.currentState?.showSnackBar(
         const SnackBar(content: Text('Job taken successfully')),
       );
@@ -138,7 +138,9 @@ Widget build(BuildContext context) {
                                 listen: false,
                               ).token ?? '';
                               if (userProvider.role == 'worker') {
-                                _showConfirmationDialog(context, token, transaction.transactionId, 'onProgress');
+                                final jokiStatus = 'onProgress';
+                                final action = "update";
+                                _showConfirmationDialog(context, token, transaction.transactionId, jokiStatus, action);
                               } else {
                                 print('EDIT TRANSACTION');
                               }
@@ -159,7 +161,7 @@ Widget build(BuildContext context) {
 }
 
   void _showConfirmationDialog(BuildContext context, String token,
-      String transactionId, String jokiStatus) {
+      String transactionId, String jokiStatus, String action) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -182,16 +184,16 @@ Widget build(BuildContext context) {
               onPressed: () async {
                 Navigator.of(context).pop(); // Close the dialog
                 try {
-                  await _transactionService.takeJob(
-                      token, transactionId, jokiStatus);
-                  scaffoldMessengerKey.currentState?.showSnackBar(
-                    const SnackBar(content: Text('Job taken')),
-                  );
+                  await _transactionService.updateTransaction(
+                      token, transactionId, jokiStatus, action);
                 } catch (e) {
                   scaffoldMessengerKey.currentState?.showSnackBar(
                     SnackBar(content: Text('Error: $e')),
                   );
                 }
+                scaffoldMessengerKey.currentState?.showSnackBar(
+                    const SnackBar(content: Text('Job taken')),
+                  );
                 _refreshTransactions();
               },
               child: const Text('Confirm'),

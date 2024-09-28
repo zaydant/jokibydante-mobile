@@ -83,9 +83,9 @@ class TransactionService {
   }
 }
 
-  Future<void> takeJob(
-      String token, String transactionId, String jokiStatus) async {
-    final uri = Uri.parse('$url/joki/$transactionId');
+  Future<void> updateTransaction(
+      String token, String transactionId, String jokiStatus, String action) async {
+    final uri = Uri.parse('$url/joki//jokiStatus/$transactionId?action=$action');
 
     try {
       final response = await http.put(
@@ -101,12 +101,14 @@ class TransactionService {
 
       if (response.statusCode == 200) {
         // print('Job taken successfully');
-        print(response);
+        final Map<String, dynamic> responseData = json.decode(response.body)['data'];
+        print(responseData);
       } else {
         print('Failed to take job: ${response.statusCode}');
         throw Exception('Failed to take job');
       }
     } catch (e) {
+      print(uri);
       print('Error take job: $e');
       throw Exception('Error take job: $e');
     }
