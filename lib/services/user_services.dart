@@ -31,4 +31,19 @@ class UserService {
     throw Exception('Error loading users: $e');
   }
 }
+Future<UserData?> getUserById(String uid, String token) async {
+    final uri = Uri.parse('$url/user/$uid');
+    final response = await http.get(uri, headers: {
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+        'Content-Type': 'application/json',
+    });
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body)['data'];
+      return UserData.fromJson(responseData);
+    } else {
+      print('Error fetching transaction: ${response.body}');
+      return null;
+    }
+  }
 }

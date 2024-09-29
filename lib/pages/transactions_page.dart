@@ -84,6 +84,7 @@ class _TransactionPageState extends State<TransactionPage> {
                   hintText: 'JDXXXXXXXXXX',
                   obscureText: false,
                   prefixIcon: Icons.search,
+                  readOnly: false,
                 ),
                 const SizedBox(
                   height: 20,

@@ -192,7 +192,7 @@ class _TransactionDetailsDialogState extends State<TransactionDetailsDialog> {
             backgroundColor: const Color.fromRGBO(43, 52, 153, 1),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
           onPressed: _isLoading || _image == null ? null : finishTransaction,

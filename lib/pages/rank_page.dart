@@ -336,6 +336,7 @@ class _RankPageState extends State<RankPage> {
                       hintText: 'Email',
                       obscureText: false,
                       prefixIcon: Icons.email,
+                      readOnly: false,
                     ),
                     const SizedBox(height: 20),
                     MyTextField(
@@ -343,6 +344,7 @@ class _RankPageState extends State<RankPage> {
                       hintText: 'Password',
                       obscureText: false, // Password field should be obscure
                       prefixIcon: Icons.lock,
+                      readOnly: false,
                     ),
                     const SizedBox(height: 20),
                     LoginCategories(onCategoryChanged: handleLoginChanged),
@@ -352,6 +354,7 @@ class _RankPageState extends State<RankPage> {
                       hintText: 'Request Hero (Max 3)',
                       obscureText: false,
                       prefixIcon: Icons.person,
+                      readOnly: false,
                     ),
                     const SizedBox(height: 20),
                     MyTextField(
@@ -359,6 +362,7 @@ class _RankPageState extends State<RankPage> {
                       hintText: 'Notes',
                       obscureText: false,
                       prefixIcon: Icons.note,
+                      readOnly: false,
                     ),
                     const SizedBox(height: 20),
                     MyTextField(
@@ -366,6 +370,7 @@ class _RankPageState extends State<RankPage> {
                       hintText: 'WhatsApp Number',
                       obscureText: false,
                       prefixIcon: Icons.call,
+                      readOnly: false,
                     ),
                   ],
                 ),

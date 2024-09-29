@@ -5,6 +5,7 @@ class MyTextField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final IconData prefixIcon;
+  final bool readOnly;
 
   const MyTextField({
     super.key,
@@ -12,6 +13,7 @@ class MyTextField extends StatelessWidget {
     required this.hintText,
     required this.obscureText,
     required this.prefixIcon,
+    required this.readOnly,
     });
 
   @override
@@ -45,6 +47,7 @@ class MyTextField extends StatelessWidget {
                     ),
                     contentPadding: const EdgeInsets.symmetric(vertical: 8),
                   ),
+                  readOnly: readOnly
                 ),
               ),
             );
