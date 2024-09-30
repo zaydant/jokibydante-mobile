@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jokiapp/models/transaction_model.dart';
+import 'package:jokiapp/models/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class TransactionRow extends StatelessWidget {
   final TransactionData transaction;
@@ -23,7 +25,7 @@ class TransactionRow extends StatelessWidget {
       case 'Legend':
         return 'assets/images/legend.png';
       case 'Mythic':
-      case 'Grading':  // Mythic and Grading share the same image
+      case 'Grading': // Mythic and Grading share the same image
         return 'assets/images/mythic.png';
       case 'Honor':
         return 'assets/images/honor.png';
@@ -32,18 +34,22 @@ class TransactionRow extends StatelessWidget {
       case 'Immortal':
         return 'assets/images/immo.png';
       default:
-        return 'assets/images/default.png';  // Fallback image
+        return 'assets/images/default.png'; // Fallback image
     }
   }
 
-  String _getStatus(String jokiStatus) {
+  String _getStatus(String jokiStatus, bool paymentStatus) {
+    if (jokiStatus == 'actionNeeded' && paymentStatus == false) {
+      return 'Not Paid';
+    }
+
     switch (jokiStatus) {
       case 'actionNeeded':
         return 'Available';
       case 'onProgress':
         return 'In Progress';
       case 'finished':
-      return 'Completed';
+        return 'Completed';
       default:
         return 'No Status';
     }
@@ -51,6 +57,7 @@ class TransactionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     return GestureDetector(
       onTap: onCheck,
       child: Container(
@@ -92,14 +99,17 @@ class TransactionRow extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text(transaction.reqHero),
+                    Text(userProvider.role == 'admin'
+                        ? transaction.transactionId
+                        : transaction.reqHero),
                   ],
                 ),
               ],
             ),
             Column(
               children: [
-                Text(_getStatus(transaction.jokiStatus)),
+                Text(_getStatus(
+                    transaction.jokiStatus, transaction.paymentStatus)),
                 const SizedBox(height: 10),
                 Text(
                   'Rp. ${transaction.price}',

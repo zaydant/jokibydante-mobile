@@ -36,6 +36,39 @@ class _TransactionDetailsDialogState extends State<TransactionDetailsDialog> {
     });
   }
 
+  Future<void> updatePayment() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final token =
+          Provider.of<UserProvider>(context, listen: false).token ?? '';
+      final transactionService = TransactionService();
+
+      await transactionService.updatePayment(
+        token,
+        widget.transaction.transactionId,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Payment Status updated successfully')),
+      );
+
+      // Call the callback function to refresh the job list
+      widget.onFinishTransaction();
+    } catch (e) {
+      print('Error updating payment status: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating payment status: $e')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.of(context).pop(true); // Return true to indicate success
+    }
+  }
   Future<void> finishTransaction() async {
     if (_image == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -67,7 +100,6 @@ class _TransactionDetailsDialogState extends State<TransactionDetailsDialog> {
 
       // Call the callback function to refresh the job list
       widget.onFinishTransaction();
-
     } catch (e) {
       print('Error finishing transaction: $e');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -115,6 +147,8 @@ class _TransactionDetailsDialogState extends State<TransactionDetailsDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
     return AlertDialog(
       title: Text(
         'Job Details',
@@ -147,7 +181,7 @@ class _TransactionDetailsDialogState extends State<TransactionDetailsDialog> {
               _buildDetailRow('Price:', widget.transaction.price, isBold: true),
               const SizedBox(height: 20),
               const Text(
-                'Image Preview',
+                'Screenshot Proof',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -162,17 +196,27 @@ class _TransactionDetailsDialogState extends State<TransactionDetailsDialog> {
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: _image == null
-                    ? const Center(child: Text('No image selected'))
-                    : ClipRRect(
+                child: _image != null
+                    ? ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image.file(
                           _image!,
                           fit: BoxFit.cover,
                         ),
-                      ),
+                      )
+                    : (widget.transaction.proof != null &&
+                            widget.transaction.proof!.isNotEmpty)
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              widget.transaction.proof!,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : const Center(child: Text('No image')),
               ),
               const SizedBox(height: 10),
+              if (userProvider.role != 'admin')
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
@@ -186,23 +230,46 @@ class _TransactionDetailsDialogState extends State<TransactionDetailsDialog> {
         ),
       ),
       actions: <Widget>[
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white,
-            backgroundColor: const Color.fromRGBO(43, 52, 153, 1),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          onPressed: _isLoading || _image == null ? null : finishTransaction,
-          child: _isLoading
-              ? const CircularProgressIndicator(color: Colors.white)
-              : const Text(
-                  'FINISH',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        userProvider.role == 'admin' && widget.transaction.paymentStatus == false
+            ? ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: const Color.fromRGBO(43, 52, 153, 1),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-        ),
+                onPressed: _isLoading ? null : updatePayment,
+                child: _isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text(
+                        'Update Payment Status',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+              )
+            : ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: const Color.fromRGBO(43, 52, 153, 1),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed:
+                    _isLoading || _image == null ? null : finishTransaction,
+                child: _isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text(
+                        'FINISH',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+              ),
       ],
     );
   }

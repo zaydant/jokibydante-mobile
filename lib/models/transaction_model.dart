@@ -40,6 +40,9 @@ class TransactionData{
   final String paymentMethod;
   final bool paymentStatus;
   final String jokiStatus;
+  String? proof;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   TransactionData ({
     required this.transactionId,
@@ -55,7 +58,10 @@ class TransactionData{
     required this.quantity,
     required this.paymentMethod,
     required this.paymentStatus,
-    required this.jokiStatus
+    required this.jokiStatus,
+    this.proof,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   factory TransactionData.fromJson(Map<String, dynamic> json) {
@@ -73,7 +79,10 @@ class TransactionData{
       quantity: json['quantity'], 
       paymentMethod: json['paymentMethod'], 
       paymentStatus: json['paymentStatus'], 
-      jokiStatus: json['jokiStatus']
+      jokiStatus: json['jokiStatus'],
+      proof: json['proof'],
+      createdAt: DateTime.parse(json['createdAt']),
+        updatedAt: DateTime.parse(json['updatedAt'])
       );
   }
 }
