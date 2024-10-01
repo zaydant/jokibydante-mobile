@@ -60,4 +60,30 @@ Future<UserData?> getUserById(String uid, String token) async {
       return false;
     }
   }
+
+  Future<Map<String, dynamic>> createUser(UserModel user) async {
+    final uri = Uri.parse('$url/auth/register');
+
+    try {
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(user.toJson()),
+      );
+
+      return {
+        'success': response.statusCode == 201,
+        'statusCode': response.statusCode,
+        'body': response.body,
+      };
+    } catch (e) {
+      print('Error submitting support request: $e');
+      return {
+        'success': false,
+        'error': e.toString(),
+      };
+    }
+  }
 }

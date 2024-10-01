@@ -61,3 +61,32 @@ class UserData {
         updatedAt: DateTime.parse(json['updatedAt']));
   }
 }
+
+class UserModel {
+  final String fullName;
+  final String username;
+  final String email;
+  final String password;
+  final String confirmPassword;
+  final String phoneNumber;
+
+  UserModel({
+    required this.fullName,
+    required this.username,
+    required this.email,
+    required this.password,
+    required this.confirmPassword,
+    required this.phoneNumber
+  });
+
+  Map<String, dynamic> toJson(){
+    return {
+      'fullName': fullName,
+      'username': username,
+      'email': email,
+      'password': password,
+      'confirmPassword': confirmPassword,
+      'phoneNumber': phoneNumber
+    };
+  }
+}

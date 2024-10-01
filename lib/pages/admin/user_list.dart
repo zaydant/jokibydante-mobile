@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jokiapp/components/add_user.dart';
 import 'package:jokiapp/components/user_details.dart';
 import 'package:jokiapp/components/user_row.dart';
 import 'package:jokiapp/models/user_model.dart';
@@ -71,6 +72,14 @@ class _UserListState extends State<UserList> {
       },
     );
   }
+  void _showAddUserDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AddUserDialog(onFinish: _refreshUsers);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +129,7 @@ class _UserListState extends State<UserList> {
                         IconButton(
                           icon: const Icon(Icons.add),
                           onPressed: () {
-                            _refreshUsers();
+                            _showAddUserDialog();
                           },
                         ),
                         IconButton(
