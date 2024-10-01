@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jokiapp/components/user_details.dart';
 import 'package:jokiapp/components/user_row.dart';
 import 'package:jokiapp/models/user_model.dart';
 import 'package:jokiapp/models/user_provider.dart';
@@ -19,12 +20,37 @@ class _UserListState extends State<UserList> {
   late Future<List<UserData>> _futureUsers;
   final UserService _userService = UserService();
 
+  final TextEditingController _searchController = TextEditingController();
+  List<UserData> _filteredUsers = [];
+  List<UserData> _allUsers = []; // Store all transactions here
+  String _searchQuery = '';
+
   @override
   void initState() {
     super.initState();
     // Using listen: false to avoid rebuilding the widget tree during initState
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     _futureUsers = _userService.getUsers(userProvider.token ?? '');
+  }
+
+  void _filterWithdraws() {
+    setState(() {
+      _filteredUsers = _allUsers
+          .where((user) =>
+              user.uid.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+              user.fullName
+                  .toLowerCase()
+                  .contains(_searchQuery.toLowerCase()) ||
+              user.username
+                  .toLowerCase()
+                  .contains(_searchQuery.toLowerCase()) ||
+              user.email.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+              user.phoneNumber
+                  .toLowerCase()
+                  .contains(_searchQuery.toLowerCase()) ||
+              user.role.toLowerCase().contains(_searchQuery.toLowerCase()))
+          .toList();
+    });
   }
 
   void _refreshUsers() {
@@ -34,19 +60,17 @@ class _UserListState extends State<UserList> {
     });
   }
 
-  // Future<void> _updateUsers(String token, String uid, String jokiStatus) async {
-  //   try {
-  //     await _transactionService.updateTransaction(token, transactionId, jokiStatus, "update");
-  //     scaffoldMessengerKey.currentState?.showSnackBar(
-  //       const SnackBar(content: Text('Job taken successfully')),
-  //     );
-  //     _refreshTransactions();
-  //   } catch (e) {
-  //     scaffoldMessengerKey.currentState?.showSnackBar(
-  //       SnackBar(content: Text('Error: $e')),
-  //     );
-  //   }
-  // }
+  void _showUserDetailsDialog(UserData user) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return UserDetailsDialog(
+          users: user,
+          onFinishDelete: _refreshUsers,
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +124,38 @@ class _UserListState extends State<UserList> {
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          color: Color.fromRGBO(131, 162, 255, 0.3)),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: 'Search',
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: const Color.fromRGBO(43, 52, 153, 1),
+                    ),
+                    border: OutlineInputBorder(),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                  ),
+                  onChanged: (query) {
+                    setState(() {
+                      _searchQuery = query;
+                      _filterWithdraws(); // Filter as the user types
+                    });
+                  },
+                ),
+              ),
               // Expanded widget is added here to allow the ListView to take available space
               Expanded(
                 child: FutureBuilder<List<UserData>>(
@@ -112,7 +168,16 @@ class _UserListState extends State<UserList> {
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                       return const Center(child: Text('No users found.'));
                     } else {
-                      List<UserData> users = snapshot.data!;
+                      _allUsers = snapshot.data!;
+
+                      List<UserData> users =
+                          _filteredUsers.isEmpty ? _allUsers : _filteredUsers;
+
+                      users.sort((a, b) {
+                        return a.fullName
+                            .toLowerCase()
+                            .compareTo(b.fullName.toLowerCase());
+                      });
 
                       if (users.isEmpty) {
                         return const Center(child: Text('No users found.'));
@@ -127,8 +192,8 @@ class _UserListState extends State<UserList> {
                                 horizontal: 20.0, vertical: 10),
                             child: UserRow(
                               user: user,
-                              onCheck: () {
-                                print('EDIT User');
+                              onCheck: () => {
+                                _showUserDetailsDialog(user),
                               },
                             ),
                           );

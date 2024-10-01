@@ -33,15 +33,20 @@ class UserData {
   final String phoneNumber;
   final String balance;
   final String role;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
-  UserData(
-      {required this.uid,
-      required this.fullName,
-      required this.username,
-      required this.email,
-      required this.phoneNumber,
-      required this.balance,
-      required this.role});
+  UserData({
+    required this.uid,
+    required this.fullName,
+    required this.username,
+    required this.email,
+    required this.phoneNumber,
+    required this.balance,
+    required this.role,
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
     return UserData(
@@ -51,6 +56,8 @@ class UserData {
         email: json['email'],
         phoneNumber: json['phoneNumber'],
         balance: json['balance'],
-        role: json['role']);
+        role: json['role'],
+        createdAt: DateTime.parse(json['createdAt']),
+        updatedAt: DateTime.parse(json['updatedAt']));
   }
 }

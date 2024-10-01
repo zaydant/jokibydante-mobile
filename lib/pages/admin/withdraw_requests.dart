@@ -176,16 +176,6 @@ class _WithdrawRequestListState extends State<WithdrawRequestList> {
                         if (a.status == 'accepted' &&
                             b.status == 'pending') return 1;
 
-                        // if (a.jokiStatus == 'actionNeeded' &&
-                        //     b.jokiStatus != 'actionNeeded') return -1;
-                        // if (a.jokiStatus != 'actionNeeded' &&
-                        //     b.jokiStatus == 'actionNeeded') return 1;
-
-                        // if (a.jokiStatus == 'onProgress' &&
-                        //     b.jokiStatus != 'onProgress') return -1;
-                        // if (a.jokiStatus != 'onProgress' &&
-                        //     b.jokiStatus == 'onProgress') return 1;
-
                         return b.createdAt.compareTo(a.createdAt);
                       });
 

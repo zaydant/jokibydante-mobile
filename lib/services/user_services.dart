@@ -46,4 +46,18 @@ Future<UserData?> getUserById(String uid, String token) async {
       return null;
     }
   }
+
+  Future<bool> deleteUser(String token, String id) async {
+    final uri = Uri.parse('$url/user/$id');
+    final response = await http.delete(uri, headers: {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    });
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
