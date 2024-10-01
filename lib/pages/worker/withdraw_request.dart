@@ -72,68 +72,81 @@ class _RequestWithdrawState extends State<RequestWithdraw> {
   }
 
   Future<void> submitRequest() async {
-    // Check if all required fields are filled
-    if (widget.nameController.text.isEmpty ||
-        widget.numberController.text.isEmpty ||
-        widget.amountController.text.isEmpty ||
-        selectedMethod == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill the form')),
-      );
-      return;
-    }
+  // Check if all required fields are filled
+  if (widget.nameController.text.isEmpty ||
+      widget.numberController.text.isEmpty ||
+      widget.amountController.text.isEmpty ||
+      selectedMethod == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please fill in all required fields')),
+    );
+    return;
+  }
 
-    // Show loading indicator
+  // Convert balance and amount to numeric values
+  double enteredAmount = double.parse(widget.amountController.text);
+  double availableBalance = double.tryParse(balance) ?? 0;
+
+  // Check if the entered amount is more than the available balance
+  if (enteredAmount > availableBalance) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Insufficient balance')),
+    );
+    return;
+  }
+
+  // Show loading indicator
+  setState(() {
+    isLoading = true;
+  });
+
+  final userProvider = Provider.of<UserProvider>(context, listen: false);
+  final token = userProvider.token;
+
+  String method = selectedMethod!;
+  String number = widget.numberController.text;
+  String name = widget.nameController.text;
+  String? note = widget.noteController.text.isNotEmpty
+      ? widget.noteController.text
+      : null;
+
+  WithdrawService withdrawService = WithdrawService();
+
+  try {
+    // Make the withdraw request
+    final response = await withdrawService.submitRequest(
+        token!, enteredAmount, method, number, name, note);
+
+    if (response['success']) {
+      // Success, show snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Withdraw request made successfully')),
+      );
+    } else {
+      // Failure, show snackbar with error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${response['statusCode']}')),
+      );
+    }
+  } catch (e) {
+    // Show an error snackbar if something went wrong
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: $e')),
+    );
+  } finally {
+    // Hide loading indicator
     setState(() {
-      isLoading = true;
+      isLoading = false;
     });
 
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final token = userProvider.token;
-
-    // Prepare data for submission
-    double amount = double.parse(widget.amountController.text);
-    String method = selectedMethod!;
-    String number = widget.numberController.text;
-    String name = widget.nameController.text;
-    String? note = widget.noteController.text.isNotEmpty
-        ? widget.noteController.text
-        : null;
-
-    WithdrawService withdrawService = WithdrawService();
-
-    try {
-      // Make the withdraw request
-      final response = await withdrawService.submitRequest(
-          token!, amount, method, number, name, note);
-
-      if (response['success']) {
-        // Success, show snackbar
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Withdraw request made')),
-        );
-      } else {
-        // Failure, show snackbar with error
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${response['statusCode']}')),
-        );
-      }
-    } catch (e) {
-      // Show an error snackbar if something went wrong
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    } finally {
-      // Hide loading indicator
-      setState(() {
-        isLoading = false;
-      });
-      widget.nameController.clear();
-      widget.numberController.clear();
-      widget.amountController.clear();
-      widget.noteController.clear();
-    }
+    // Clear input fields
+    widget.nameController.clear();
+    widget.numberController.clear();
+    widget.amountController.clear();
+    widget.noteController.clear();
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
