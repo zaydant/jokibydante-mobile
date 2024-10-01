@@ -149,8 +149,8 @@ class _TransactionListState extends State<TransactionList> {
                     fillColor: Colors.white,
                     filled: true,
                     hintText: 'Search',
-                    prefixIcon: Icon(Icons.search, color: const Color.fromRGBO(43, 52, 153, 1),),
-                    border: OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.search, color: Color.fromRGBO(43, 52, 153, 1),),
+                    border: const OutlineInputBorder(),
                     contentPadding: const EdgeInsets.symmetric(vertical: 8),
                   ),
                   onChanged: (query) {
@@ -229,8 +229,8 @@ class _TransactionListState extends State<TransactionList> {
                                         ).token ??
                                     '';
                                 if (userProvider.role == 'worker') {
-                                  final jokiStatus = 'onProgress';
-                                  final action = "update";
+                                  const jokiStatus = 'onProgress';
+                                  const action = "update";
                                   _showConfirmationDialog(
                                       context,
                                       token,

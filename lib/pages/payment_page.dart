@@ -99,7 +99,7 @@ class _PaymentPageState extends State<PaymentPage> {
         title: const Text('Your Invoice'),
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             onPressed: () {
               _getTransactionById();
             },

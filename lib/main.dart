@@ -17,7 +17,7 @@ Future<void> main() async {
   runApp(
     ChangeNotifierProvider(
       create: (_) => userProvider,
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }

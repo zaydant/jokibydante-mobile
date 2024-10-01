@@ -34,7 +34,7 @@ class ReqRow extends StatelessWidget {
           children: [
             Row(
               children: [
-                Column(
+                const Column(
                   children: [
                     // Use the _getRankImage function to get the correct image based on rank
                     Icon(

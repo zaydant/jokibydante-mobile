@@ -94,12 +94,12 @@ class _ReqDetailsDialogState extends State<ReqDetailsDialog> {
     Provider.of<UserProvider>(context, listen: false);
 
     return AlertDialog(
-      title: Text(
+      title: const Text(
         'Withdraw Details',
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: const Color.fromRGBO(43, 52, 153, 1),
+          color: Color.fromRGBO(43, 52, 153, 1),
         ),
       ),
       content: SizedBox(

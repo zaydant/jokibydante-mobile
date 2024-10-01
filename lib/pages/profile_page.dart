@@ -149,7 +149,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(
                     height: 15,
                   ),
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 60,
                     backgroundImage: AssetImage('assets/images/profile.png'),
                     backgroundColor: Colors.transparent,
@@ -168,14 +168,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 15),
                   Text(
                     'ID: ${userProvider.uid ?? ''}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 15,
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text('Phone Number'),
                     ],
                   ),
@@ -195,9 +195,9 @@ class _ProfilePageState extends State<ProfilePage> {
               }
                   ),
                   const SizedBox(height: 10),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text('Old Password'),
                     ],
                   ),
@@ -217,9 +217,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
                   ),
                   const SizedBox(height: 10),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text('New Password'),
                     ],
                   ),

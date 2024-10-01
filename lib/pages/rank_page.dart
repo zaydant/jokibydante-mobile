@@ -75,9 +75,9 @@ class _RankPageState extends State<RankPage> {
                           ],
                         ),
                         const SizedBox(height: 20),
-                        Row(
+                        const Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
                               'Payment Methods',
                               style: TextStyle(
@@ -287,9 +287,9 @@ class _RankPageState extends State<RankPage> {
                       ),
 
                       // Right Column: Text
-                      Column(
+                      const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
                             'Joki Rank',
                             style: TextStyle(
@@ -314,7 +314,7 @@ class _RankPageState extends State<RankPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
@@ -374,10 +374,10 @@ class _RankPageState extends State<RankPage> {
                   ],
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
@@ -387,7 +387,7 @@ class _RankPageState extends State<RankPage> {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 // Rows with ServiceBox widgets

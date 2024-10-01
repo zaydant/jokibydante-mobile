@@ -202,7 +202,7 @@ class _RequestWithdrawState extends State<RequestWithdraw> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Available Balance:',
                     style: TextStyle(
                       fontFamily: 'JosefinSans',
@@ -288,10 +288,12 @@ class _RequestWithdrawState extends State<RequestWithdraw> {
                       final filteredWithdraws = snapshot.data!
                         ..sort((a, b) {
                           // Compare statuses: 'pending' should appear at the top
-                          if (a.status == 'pending' && b.status != 'pending')
+                          if (a.status == 'pending' && b.status != 'pending') {
                             return -1;
-                          if (a.status != 'pending' && b.status == 'pending')
+                          }
+                          if (a.status != 'pending' && b.status == 'pending') {
                             return 1;
+                          }
 
                           // If statuses are the same, sort by createdAt in descending order (most recent first)
                           return b.createdAt.compareTo(a.createdAt);

@@ -31,11 +31,11 @@ class _AdminScreenState extends State<AdminScreen> {
   @override
   Widget build(BuildContext context) {
     final screens = [
-      TransactionList(),
-      WithdrawRequestList(),
-      UserList(),
-      SupportList(),
-      ProfilePage(),
+      const TransactionList(),
+      const WithdrawRequestList(),
+      const UserList(),
+      const SupportList(),
+      const ProfilePage(),
     ];
 
     final items = <Widget>[
@@ -66,7 +66,7 @@ class _AdminScreenState extends State<AdminScreen> {
       body: screens[index],
       bottomNavigationBar: CurvedNavigationBar(
         key: navigationKey,
-        backgroundColor: Color.fromRGBO(244, 244, 244, 1),
+        backgroundColor: const Color.fromRGBO(244, 244, 244, 1),
         color: const Color.fromRGBO(43, 52, 153, 1),
         animationDuration: const Duration(milliseconds: 300),
         index: index,

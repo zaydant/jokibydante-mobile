@@ -72,12 +72,12 @@ class _AddUserDialogState extends State<AddUserDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
+      title: const Text(
         'Add New User',
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: const Color.fromRGBO(43, 52, 153, 1),
+          color: Color.fromRGBO(43, 52, 153, 1),
         ),
       ),
       content: SizedBox(

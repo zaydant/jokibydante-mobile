@@ -53,7 +53,7 @@ class SupportRow extends StatelessWidget {
                 ),
             Column(
               children: [
-                Text(' '),
+                const Text(' '),
                 const SizedBox(height: 10),
                 Text(
                   DateFormat('yyyy-MM-dd').format(supportData.createdAt),

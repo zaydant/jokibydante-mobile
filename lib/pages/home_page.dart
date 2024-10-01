@@ -47,9 +47,9 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 const SizedBox(height: 5),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
                       'Welcome!',
                       style:
@@ -58,9 +58,9 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(height: 50),
                   ],
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
                       'What do you need today?',
                       style: TextStyle(
@@ -74,9 +74,9 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 30),
 
                 // Our Services Section
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: const Align(
+                const Padding(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Our Services',
@@ -110,10 +110,10 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => RankPage()));
+                                  builder: (context) => const RankPage()));
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Coming Soon!')),
+                            const SnackBar(content: Text('Coming Soon!')),
                           );
                         }
                       },

@@ -20,10 +20,10 @@ class _WorkerScreenState extends State<WorkerScreen> {
   @override
   Widget build(BuildContext context) {
     final screens = [
-      JobList(),
-      TransactionList(),
+      const JobList(),
+      const TransactionList(),
       RequestWithdraw(),
-      ProfilePage(),
+      const ProfilePage(),
     ];
 
     final items = <Widget>[
@@ -50,7 +50,7 @@ class _WorkerScreenState extends State<WorkerScreen> {
       body: screens[index],
       bottomNavigationBar: CurvedNavigationBar(
         key: navigationKey,
-        backgroundColor: Color.fromRGBO(244, 244, 244, 1),
+        backgroundColor: const Color.fromRGBO(244, 244, 244, 1),
         color: const Color.fromRGBO(43, 52, 153, 1),
         animationDuration: const Duration(milliseconds: 300),
         index: index,

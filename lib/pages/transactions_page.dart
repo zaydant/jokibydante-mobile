@@ -42,10 +42,10 @@ class _TransactionPageState extends State<TransactionPage> {
             child: Column(
               children: [
                 const SizedBox(height: 5),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Find your order here!',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -53,10 +53,10 @@ class _TransactionPageState extends State<TransactionPage> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Track your order by inputting your invoice number!',
                       style: TextStyle(
                         fontSize: 12,
@@ -66,10 +66,10 @@ class _TransactionPageState extends State<TransactionPage> {
                   ],
                 ),
                 const SizedBox(height: 35),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       'Your Transaction ID',
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
@@ -101,10 +101,10 @@ class _TransactionPageState extends State<TransactionPage> {
                     onPressed: () async {
                       if (invoiceController.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content:
-                                const Text('Please enter your Transaction ID'),
-                            duration: const Duration(seconds: 3),
+                                Text('Please enter your Transaction ID'),
+                            duration: Duration(seconds: 3),
                           ),
                         );
                       } else {
@@ -138,16 +138,16 @@ class _TransactionPageState extends State<TransactionPage> {
                         } else {
                           // If transaction is not found, show a SnackBar
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: const Text('Transaction not found!'),
+                            const SnackBar(
+                              content: Text('Transaction not found!'),
                               backgroundColor: Colors.red,
-                              duration: const Duration(seconds: 3),
+                              duration: Duration(seconds: 3),
                             ),
                           );
                         }
                       }
                     },
-                    child: Text(
+                    child: const Text(
                       'Find Your Order!',
                       style: TextStyle(color: Colors.white),
                     ))

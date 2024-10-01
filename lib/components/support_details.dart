@@ -93,12 +93,12 @@ class _SupportDetailsDialogState extends State<SupportDetailsDialog> {
     Provider.of<UserProvider>(context, listen: false);
 
     return AlertDialog(
-      title: Text(
+      title: const Text(
         'Support Details',
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: const Color.fromRGBO(43, 52, 153, 1),
+          color: Color.fromRGBO(43, 52, 153, 1),
         ),
       ),
       content: SizedBox(
