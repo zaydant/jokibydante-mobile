@@ -115,11 +115,21 @@ class _UserListState extends State<UserList> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.refresh),
-                      onPressed: () {
-                        _refreshUsers();
-                      },
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.add),
+                          onPressed: () {
+                            _refreshUsers();
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.refresh),
+                          onPressed: () {
+                            _refreshUsers();
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -141,11 +151,11 @@ class _UserListState extends State<UserList> {
                     fillColor: Colors.white,
                     filled: true,
                     hintText: 'Search',
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.search,
-                      color: const Color.fromRGBO(43, 52, 153, 1),
+                      color: Color.fromRGBO(43, 52, 153, 1),
                     ),
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     contentPadding: const EdgeInsets.symmetric(vertical: 8),
                   ),
                   onChanged: (query) {
@@ -156,7 +166,7 @@ class _UserListState extends State<UserList> {
                   },
                 ),
               ),
-              // Expanded widget is added here to allow the ListView to take available space
+              const SizedBox(height: 10),
               Expanded(
                 child: FutureBuilder<List<UserData>>(
                   future: _futureUsers,

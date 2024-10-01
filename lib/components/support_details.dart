@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:jokiapp/models/user_model.dart';
-import 'package:jokiapp/services/user_services.dart';
+import 'package:jokiapp/models/support_model.dart';
+import 'package:jokiapp/services/support_services.dart';
 import 'package:provider/provider.dart';
 import 'package:jokiapp/models/user_provider.dart';
 import 'package:intl/intl.dart';
 
-class UserDetailsDialog extends StatefulWidget {
-  final UserData users;
+class SupportDetailsDialog extends StatefulWidget {
+  final SupportData supports;
   final VoidCallback onFinishDelete;
 
-  const UserDetailsDialog({
+  const SupportDetailsDialog({
     Key? key,
-    required this.users,
+    required this.supports,
     required this.onFinishDelete,
   }) : super(key: key);
 
   @override
-  _UserDetailsDialogState createState() =>
-      _UserDetailsDialogState();
+  _SupportDetailsDialogState createState() =>
+      _SupportDetailsDialogState();
 }
 
-class _UserDetailsDialogState extends State<UserDetailsDialog> {
+class _SupportDetailsDialogState extends State<SupportDetailsDialog> {
   bool _isLoading = false;
 
-  Future<void> deleteUser() async {
+  Future<void> deleteSupport() async {
     setState(() {
       _isLoading = true;
     });
@@ -31,23 +31,22 @@ class _UserDetailsDialogState extends State<UserDetailsDialog> {
     try {
       final token =
           Provider.of<UserProvider>(context, listen: false).token ?? '';
-      final userService = UserService();
+      final supportService = SupportService();
 
-      await userService.deleteUser(
+      await supportService.deleteUser(
         token,
-        widget.users.uid,
+        widget.supports.supportId,
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('User deleted successfully')),
+        const SnackBar(content: Text('Request deleted successfully')),
       );
 
-      // Call the callback function to refresh the job list
       widget.onFinishDelete();
     } catch (e) {
-      print('Error deleting user: $e');
+      print('Error deleting request: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error deleting user: $e')),
+        SnackBar(content: Text('Error deleting request: $e')),
       );
     } finally {
       setState(() {
@@ -95,7 +94,7 @@ class _UserDetailsDialogState extends State<UserDetailsDialog> {
 
     return AlertDialog(
       title: Text(
-        'User Details',
+        'Support Details',
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
@@ -110,17 +109,17 @@ class _UserDetailsDialogState extends State<UserDetailsDialog> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               _buildDetailRow(
-                  'User ID:', widget.users.uid),
-              _buildDetailRow('Full Name:', widget.users.fullName, isBold: true),
-              _buildDetailRow('Username:', widget.users.username,
+                  'Support ID:', widget.supports.supportId),
+              _buildDetailRow('Name:', widget.supports.name, isBold: true),
+              _buildDetailRow('Email:', widget.supports.email,
                   isBold: true),
-              _buildDetailRow('Email:', widget.users.email,
+              _buildDetailRow('Phone Num:', widget.supports.phoneNumber,
                   isBold: true),
-              _buildDetailRow('Phone Num:', widget.users.phoneNumber),
-              _buildDetailRow('Balance:', widget.users.balance),
-              _buildDetailRow('Role:', widget.users.role),
+              _buildDetailRow('Transaction ID:', widget.supports.transactionId),
+              _buildDetailRow('Issue:', widget.supports.issue),
+              _buildDetailRow('Description:', widget.supports.description),
               _buildDetailRow('Date Created:',
-                  DateFormat('yyyy-MM-dd').format(widget.users.createdAt)),
+                  DateFormat('yyyy-MM-dd').format(widget.supports.createdAt)),
             ],
           ),
         ),
@@ -135,11 +134,11 @@ class _UserDetailsDialogState extends State<UserDetailsDialog> {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          onPressed: _isLoading ? null : deleteUser,
+          onPressed: _isLoading ? null : deleteSupport,
           child: _isLoading
               ? const CircularProgressIndicator(color: Colors.white)
               : const Text(
-                  'Delete User',
+                  'Delete',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
         ),
