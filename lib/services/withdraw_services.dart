@@ -66,4 +66,57 @@ class WithdrawService {
     throw Exception('Error loading requests: $e');
   }
 }
+
+Future<List<WithdrawModel>> getWithdraws (String token) async {
+  final uri = Uri.parse('$url/withdraw');
+
+  try {
+    final response = await http.get(
+      uri,
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final List<dynamic> withdrawsJson = data['data'];
+
+      return withdrawsJson.map((json) => WithdrawModel.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load withdraws');
+    }
+  } catch (e) {
+    print('Error loading users: $e');
+    throw Exception('Error loading users: $e');
+  }
+}
+
+Future<void> updateWithdrawStatus(
+      String token, String withdrawId) async {
+    final uri = Uri.parse('$url/withdraw/$withdrawId');
+
+    try {
+      final response = await http.put(
+        uri,
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // print('Job taken successfully');
+        final Map<String, dynamic> responseData = json.decode(response.body)['data'];
+        print(responseData);
+      } else {
+        print('Failed to update status: ${response.statusCode}');
+        throw Exception('Failed to update status');
+      }
+    } catch (e) {
+      print('Error to update status: $e');
+      throw Exception('Error to update status: $e');
+    }
+  }
 }

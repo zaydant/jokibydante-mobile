@@ -12,11 +12,6 @@ class ReqRow extends StatelessWidget {
     required this.onCheck,
   }) : super(key: key);
 
-  String formatDate(String createdAt) {
-  DateTime dateTime = DateTime.parse(createdAt);
-  return DateFormat('yyyy-MM-dd').format(dateTime); // or use any other format
-}
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -52,7 +47,7 @@ class ReqRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${withdrawData.accountNumber}',
+                      '${withdrawData.accountName}',
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jokiapp/models/user_provider.dart';
-import 'package:jokiapp/pages/home_page.dart';
 import 'package:jokiapp/pages/home_screen.dart';
 import 'package:provider/provider.dart';
 

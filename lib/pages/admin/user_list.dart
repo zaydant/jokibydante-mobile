@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jokiapp/components/transaction_row.dart';
 import 'package:jokiapp/components/user_row.dart';
 import 'package:jokiapp/models/user_model.dart';
 import 'package:jokiapp/models/user_provider.dart';
@@ -51,7 +50,7 @@ class _UserListState extends State<UserList> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
+    Provider.of<UserProvider>(context);
 
     return ScaffoldMessenger(
       key: scaffoldMessengerKey,
@@ -129,11 +128,6 @@ class _UserListState extends State<UserList> {
                             child: UserRow(
                               user: user,
                               onCheck: () {
-                                final token = Provider.of<UserProvider>(
-                                      context,
-                                      listen: false,
-                                    ).token ??
-                                    '';
                                 print('EDIT User');
                               },
                             ),

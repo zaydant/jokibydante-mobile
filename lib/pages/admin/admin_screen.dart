@@ -32,7 +32,7 @@ class _AdminScreenState extends State<AdminScreen> {
   Widget build(BuildContext context) {
     final screens = [
       TransactionList(),
-      WithdrawRequests(),
+      WithdrawRequestList(),
       UserList(),
       SupportList(),
       ProfilePage(),

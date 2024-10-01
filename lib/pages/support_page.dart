@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jokiapp/components/my_button.dart';
 import 'package:jokiapp/models/support_model.dart';
-import 'package:jokiapp/models/user_provider.dart';
 import 'package:jokiapp/services/support_services.dart';
-import 'package:provider/provider.dart';
 
 class SupportPage extends StatefulWidget {
   const SupportPage({super.key});

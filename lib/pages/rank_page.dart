@@ -20,7 +20,6 @@ class RankPage extends StatefulWidget {
 class _RankPageState extends State<RankPage> {
   bool _dialogShown = false; // Boolean flag to track if dialog is shown
   String? selectedLogin;
-  final TransactionService _transactionService = TransactionService();
 
   //text editing controller
   final emailController = TextEditingController();
