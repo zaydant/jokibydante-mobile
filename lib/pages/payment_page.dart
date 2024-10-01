@@ -18,6 +18,7 @@ class PaymentPage extends StatefulWidget {
   String? paymentMethod;
   bool? paymentStatus;
   String? jokiStatus;
+  String? proof;
 
   PaymentPage({
     super.key,
@@ -33,6 +34,7 @@ class PaymentPage extends StatefulWidget {
     this.totalPrice,
     this.paymentMethod,
     this.jokiStatus,
+    this.proof,
   });
 
   @override
@@ -63,6 +65,7 @@ class _PaymentPageState extends State<PaymentPage> {
         widget.paymentMethod = fetchedTransaction.paymentMethod;
         widget.paymentStatus = fetchedTransaction.paymentStatus;
         widget.jokiStatus = fetchedTransaction.jokiStatus;
+        widget.proof = fetchedTransaction.proof;
       });
     } else {
       print('Transaction not found');
@@ -99,7 +102,8 @@ class _PaymentPageState extends State<PaymentPage> {
             icon: Icon(Icons.refresh),
             onPressed: () {
               _getTransactionById();
-            },)
+            },
+          )
         ],
       ),
       body: SingleChildScrollView(
@@ -125,6 +129,33 @@ class _PaymentPageState extends State<PaymentPage> {
                   _buildPaymentInstructions(),
                   const SizedBox(height: 20),
                   _buildTransactionInfo(),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Screenshot Proof',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(43, 52, 153, 1),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    height: 200,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: widget.proof != null
+                        ? ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  widget.proof!,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : const Center(child: Text('No image')),
+                  ),
                 ],
               ),
             ),
@@ -303,7 +334,8 @@ class _PaymentPageState extends State<PaymentPage> {
         statusText = 'Finished';
         break;
       default:
-        containerColor = const Color.fromARGB(255, 255, 0, 0); // Red for not started
+        containerColor =
+            const Color.fromARGB(255, 255, 0, 0); // Red for not started
         statusText = 'Not Started';
     }
 

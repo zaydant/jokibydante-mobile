@@ -238,7 +238,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   return null;
                 },
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,

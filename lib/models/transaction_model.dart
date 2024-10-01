@@ -101,6 +101,7 @@ class TransactionModel {
   final bool paymentStatus;
   final String jokiStatus;
   final String? transactionId; // Nullable field for transaction ID
+  final String? proof;
   final String? createdAt; // Nullable field for creation time
   final String? updatedAt; // Nullable field for update time
 
@@ -118,6 +119,7 @@ class TransactionModel {
     required this.paymentStatus,
     required this.jokiStatus,
     this.transactionId, // Optional field for the transaction ID
+    this.proof,
     this.createdAt, // Optional field for creation time
     this.updatedAt, // Optional field for update time
   });
@@ -156,6 +158,7 @@ class TransactionModel {
       paymentStatus: json['paymentStatus'],
       jokiStatus: json['jokiStatus'],
       transactionId: json['transactionId'],
+      proof: json['proof'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
     );
